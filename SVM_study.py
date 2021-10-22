@@ -32,6 +32,12 @@ train_data, test_data, train_label, test_label = train_test_split(x, y, random_s
                                                                   test_size=0.4)
 print(train_data.shape)
 
+# 经过测试，SVM 不会被样本顺序影响
+state = np.random.get_state()
+np.random.shuffle(train_data)
+np.random.set_state(state)
+np.random.shuffle(train_label)
+
 # 3.训练svm分类器
 classifier = svm.SVC(C=2, kernel='rbf', gamma=10, decision_function_shape='ovo')  # ovr:一对多策略
 classifier.fit(train_data, train_label.ravel())  # ravel函数在降维时默认是行序优先

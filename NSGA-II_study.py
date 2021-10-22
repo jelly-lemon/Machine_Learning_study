@@ -1,5 +1,7 @@
 """
 NSGA-II 遗传算法
+
+
 """
 
 
@@ -8,14 +10,20 @@ import random
 import matplotlib.pyplot as plt
 
 
-# First function to optimize
 def function1(x):
+    """
+    目标函数 1
+    """
     value = -x ** 2
     return value
 
 
-# Second function to optimize
 def function2(x):
+    """
+    目标函数 2
+
+    我们的期望是在两个目标函数上都尽量取得比较大的值
+    """
     value = -(x - 2) ** 2
     return value
 
@@ -38,10 +46,9 @@ def sort_by_values(list1, values):
     return sorted_list
 
 
-# Function to carry out NSGA-II's fast non dominated sort
 def fast_non_dominated_sort(values1, values2):
     """
-    快速非支配排序将决定如何选择解
+    快速非支配排序
 
     :param values1:
     :param values2:
@@ -89,8 +96,15 @@ def fast_non_dominated_sort(values1, values2):
     return front
 
 
-# Function to calculate crowding distance
 def crowding_distance(values1, values2, front):
+    """
+    计算每个个体的拥挤度
+
+    :param values1:
+    :param values2:
+    :param front:
+    :return:
+    """
     distance = [0 for i in range(0, len(front))]
     sorted1 = sort_by_values(front, values1[:])
     sorted2 = sort_by_values(front, values2[:])
@@ -103,8 +117,14 @@ def crowding_distance(values1, values2, front):
     return distance
 
 
-# Function to carry out the crossover
 def crossover(a, b):
+    """
+    交叉
+
+    :param a:
+    :param b:
+    :return:
+    """
     r = random.random()
     if r > 0.5:
         return mutation((a + b) / 2)
@@ -112,8 +132,13 @@ def crossover(a, b):
         return mutation((a - b) / 2)
 
 
-# Function to carry out the mutation operator
 def mutation(solution):
+    """
+    变异
+
+    :param solution:
+    :return:
+    """
     mutation_prob = random.random()
     if mutation_prob < 1:
         solution = min_x + (max_x - min_x) * random.random()
@@ -121,14 +146,14 @@ def mutation(solution):
 
 
 # Main program starts here
-pop_size = 20
-max_gen = 921
+pop_size = 20   # 种群大小
+max_gen = 921   # 迭代（进化）次数
 
 # Initialization
-min_x = -55
-max_x = 55
-solution = [min_x + (max_x - min_x) * random.random() for i in range(0, pop_size)]
-gen_no = 0
+min_x = -55 # 个体最小值
+max_x = 55  # 个体最大值
+solution = [min_x + (max_x - min_x) * random.random() for i in range(0, pop_size)]  # 初始种群
+gen_no = 0  # 当前迭代次数
 while gen_no < max_gen:
     function1_values = [function1(solution[i]) for i in range(0, pop_size)]
     function2_values = [function2(solution[i]) for i in range(0, pop_size)]
